@@ -1,0 +1,32 @@
+ext {
+//  Android
+    androidBuildToolsVersion = '24.0.0'
+    androidMinSdkVersion = 15
+    androidCompileSdkVersion = 23
+    androidTargetSdkVersion = 23
+//  Libraries
+    support_v13 = 'com.android.support:support-v13:24.0.0'
+    appcompat = 'com.android.support:appcompat-v7:24.0.0'
+    design = 'com.android.support:design:24.0.0'
+    recyclerView = 'com.android.support:recyclerview-v7:24.0.0'
+    supportAnnotations = 'com.android.support:support-annotations:24.0.0'
+}
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.2.0-alpha3'
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
