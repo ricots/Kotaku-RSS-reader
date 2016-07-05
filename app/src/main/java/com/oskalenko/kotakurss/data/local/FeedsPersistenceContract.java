@@ -31,7 +31,6 @@ public final class FeedsPersistenceContract {
     public static abstract class FeedEntry implements BaseColumns {
 
         public static final String TABLE_NAME = "feed";
-        public static final String COLUMN_NAME_ENTRY_ID = "feedId";
         public static final String COLUMN_NAME_TITLE = "title";
         public static final String COLUMN_NAME_DESCRIPTION = "description";
         public static final String COLUMN_NAME_LINK = "link";
@@ -40,7 +39,6 @@ public final class FeedsPersistenceContract {
         public static final Uri CONTENT_FEED_URI = BASE_CONTENT_URI.buildUpon().appendPath(TABLE_NAME).build();
         public static String[] FEEDS_COLUMNS = new String[]{
                 FeedEntry._ID,
-                FeedEntry.COLUMN_NAME_ENTRY_ID,
                 FeedEntry.COLUMN_NAME_TITLE,
                 FeedEntry.COLUMN_NAME_DESCRIPTION,
                 FeedEntry.COLUMN_NAME_LINK,

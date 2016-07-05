@@ -17,6 +17,7 @@ public class Feed {
     private String imageUrl;
 
     public Feed(long id, String title, String description, String link, long date, String imageUrl) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.link = link;
@@ -88,8 +89,8 @@ public class Feed {
     }
 
     private static Feed fromCursor(Cursor cursor) {
-        final long entryId = cursor.getLong(cursor.getColumnIndexOrThrow(
-                FeedsPersistenceContract.FeedEntry.COLUMN_NAME_ENTRY_ID));
+        final long feedId = cursor.getLong(cursor.getColumnIndexOrThrow(
+                FeedsPersistenceContract.FeedEntry._ID));
         final String title = cursor.getString(cursor.getColumnIndexOrThrow(
                 FeedsPersistenceContract.FeedEntry.COLUMN_NAME_TITLE));
         final String description = cursor.getString(cursor.getColumnIndexOrThrow(
@@ -100,7 +101,7 @@ public class Feed {
                 FeedsPersistenceContract.FeedEntry.COLUMN_NAME_DATE));
         final String imageUrl = cursor.getString(cursor.getColumnIndexOrThrow(
                 FeedsPersistenceContract.FeedEntry.COLUMN_NAME_IMAGE_URL));
-        return new Feed(entryId, title, description, link, date, imageUrl);
+        return new Feed(feedId, title, description, link, date, imageUrl);
     }
 
     @Override

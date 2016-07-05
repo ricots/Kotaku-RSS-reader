@@ -70,7 +70,7 @@ public class FeedsProvider extends ContentProvider {
                 retCursor = mFeedsDbHelper.getReadableDatabase().query(
                         FeedsPersistenceContract.FeedEntry.TABLE_NAME,
                         projection,
-                        FeedsPersistenceContract.FeedEntry.COLUMN_NAME_ENTRY_ID + " = ?",
+                        FeedsPersistenceContract.FeedEntry._ID + " = ?",
                         where,
                         null,
                         null,
@@ -93,20 +93,22 @@ public class FeedsProvider extends ContentProvider {
 
         switch (match) {
             case FEEDS:
+
                 Cursor exists = db.query(
                         FeedsPersistenceContract.FeedEntry.TABLE_NAME,
-                        new String[]{FeedsPersistenceContract.FeedEntry.COLUMN_NAME_ENTRY_ID},
-                        FeedsPersistenceContract.FeedEntry.COLUMN_NAME_ENTRY_ID + " = ?",
-                        new String[]{values.getAsString(FeedsPersistenceContract.FeedEntry.COLUMN_NAME_ENTRY_ID)},
+                        new String[]{FeedsPersistenceContract.FeedEntry._ID},
+                        FeedsPersistenceContract.FeedEntry._ID + " = ?",
+                        new String[]{values.getAsString(FeedsPersistenceContract.FeedEntry._ID)},
                         null,
                         null,
                         null
                 );
+
                 if (exists.moveToLast()) {
                     long _id = db.update(
                             FeedsPersistenceContract.FeedEntry.TABLE_NAME, values,
-                            FeedsPersistenceContract.FeedEntry.COLUMN_NAME_ENTRY_ID + " = ?",
-                            new String[]{values.getAsString(FeedsPersistenceContract.FeedEntry.COLUMN_NAME_ENTRY_ID)}
+                            FeedsPersistenceContract.FeedEntry._ID + " = ?",
+                            new String[]{values.getAsString(FeedsPersistenceContract.FeedEntry._ID)}
                     );
                     if (_id > 0) {
                         returnUri = FeedsPersistenceContract.FeedEntry.buildFeedsUriWith(_id);
@@ -121,6 +123,7 @@ public class FeedsProvider extends ContentProvider {
                         throw new android.database.SQLException("Failed to insert row into " + uri);
                     }
                 }
+
                 exists.close();
                 break;
             default:

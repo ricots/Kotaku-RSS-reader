@@ -8,4 +8,5 @@ package com.oskalenko.kotakurss.common;
  */
 
 public class Constants {
+    public static final String FEEDS_URL = "http://kotaku.com/rss";
 }

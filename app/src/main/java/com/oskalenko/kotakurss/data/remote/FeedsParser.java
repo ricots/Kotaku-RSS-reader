@@ -27,9 +27,9 @@ import java.util.regex.Pattern;
 public class FeedsParser {
 
     private static final String TAG = FeedsParser.class.getSimpleName();
-    private static final String NS = "item";
+    private static final String NS = null;
     private static final String IMAGE_URL_PATTERN = "(?m)(?s)<img\\s+(.*)src\\s*=\\s*\"([^\"]+)\"(.*)";
-    private static final String PUB_DATE_FORMAT = "EEE, d MMM yyyy HH:mm:ss z";
+    private static final String PUB_DATE_FORMAT = "EEE, d MMM yyyy HH:mm:ss Z";
     private static final String GUID = "guid";
     private static final String TITLE = "title";
     private static final String LINK = "link";
@@ -55,19 +55,18 @@ public class FeedsParser {
     }
 
     private List<Feed> readFeed(XmlPullParser parser) throws XmlPullParserException, IOException {
-        List entries = new ArrayList();
+        List<Feed> entries = new ArrayList();
+        parser.require(XmlPullParser.START_TAG, NS, "rss");
 
-        parser.require(XmlPullParser.START_TAG, NS, "feed");
-        while (parser.next() != XmlPullParser.END_TAG) {
+        while (parser.next() != XmlPullParser.END_DOCUMENT) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
                 continue;
             }
+
             String name = parser.getName();
             // Starts by looking for the entry tag
-            if (name.equals("entry")) {
+            if (name.equals("item")) {
                 entries.add(readEntry(parser));
-            } else {
-                skip(parser);
             }
         }
 
@@ -75,7 +74,7 @@ public class FeedsParser {
     }
 
     private Feed readEntry(XmlPullParser parser) throws XmlPullParserException, IOException {
-        parser.require(XmlPullParser.START_TAG, NS, "entry");
+        parser.require(XmlPullParser.START_TAG, NS, "item");
 
         String title = null;
         String description = null;
@@ -147,7 +146,7 @@ public class FeedsParser {
         final String pubDate = readText(parser);
         if (!TextUtils.isEmpty(pubDate)) {
             try {
-                return mSimpleDateFormat.parse(pubDate).getDate();
+                return mSimpleDateFormat.parse(pubDate).getTime();
             } catch (ParseException e) {
                 Log.e(TAG + ":readPubDate", e.getMessage());
             }

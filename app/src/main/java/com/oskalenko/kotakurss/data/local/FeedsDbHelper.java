@@ -15,7 +15,6 @@ public class FeedsDbHelper extends SQLiteOpenHelper {
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + FeedsPersistenceContract.FeedEntry.TABLE_NAME + " (" +
                     FeedsPersistenceContract.FeedEntry._ID + INTEGER_TYPE + " PRIMARY KEY," +
-                    FeedsPersistenceContract.FeedEntry.COLUMN_NAME_ENTRY_ID + TEXT_TYPE + COMMA_SEP +
                     FeedsPersistenceContract.FeedEntry.COLUMN_NAME_TITLE + TEXT_TYPE + COMMA_SEP +
                     FeedsPersistenceContract.FeedEntry.COLUMN_NAME_DESCRIPTION + TEXT_TYPE + COMMA_SEP +
                     FeedsPersistenceContract.FeedEntry.COLUMN_NAME_LINK + TEXT_TYPE + COMMA_SEP +

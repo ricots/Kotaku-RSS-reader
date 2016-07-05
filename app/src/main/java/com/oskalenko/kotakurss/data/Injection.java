@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.oskalenko.kotakurss.data.local.FeedsLocalDataSource;
+import com.oskalenko.kotakurss.data.remote.FeedsParser;
 import com.oskalenko.kotakurss.data.remote.FeedsRemoteDataSource;
 
 import static com.oskalenko.kotakurss.common.Utils.checkNotNull;
@@ -25,5 +26,9 @@ public class Injection {
     public static FeedsLocalDataSource provideLocalDataSource(@NonNull Context context) {
         checkNotNull(context);
         return FeedsLocalDataSource.getInstance(context.getContentResolver());
+    }
+
+    public static FeedsParser provideFeedsParser() {
+        return new FeedsParser();
     }
 }
