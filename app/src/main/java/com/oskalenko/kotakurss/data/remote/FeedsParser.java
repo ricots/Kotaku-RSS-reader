@@ -43,7 +43,7 @@ public class FeedsParser {
 
     public FeedsParser() {
         mSimpleDateFormat = new SimpleDateFormat(PUB_DATE_FORMAT);
-        mImageUrlPattern = Pattern.compile(IMAGE_URL_PATTERN, Pattern.CASE_INSENSITIVE);
+        mImageUrlPattern = Pattern.compile(IMAGE_URL_PATTERN);
         mImgLinkUrlPattern = Pattern.compile(IMG_LINK_PATTERN, Pattern.CASE_INSENSITIVE);
     }
 
@@ -100,6 +100,7 @@ public class FeedsParser {
             } else if (name.equals(DESCRIPTION)) {
                 description = readDescription(parser);
                 imageUrl = getImageUrl(description);
+                description = removeImgLinkFromText(description);
             } else if (name.equals(LINK)) {
                 link = readLink(parser);
             } else if (name.equals(PUB_DATE)) {
@@ -129,7 +130,7 @@ public class FeedsParser {
         return result;
     }
 
-    private String removeImgLinkFromText(String text) { //TODO fix issue with pattern
+    private String removeImgLinkFromText(String text) {
         if (TextUtils.isEmpty(text)) {
             return null;
         }
@@ -161,7 +162,7 @@ public class FeedsParser {
 
     private String readDescription(XmlPullParser parser) throws IOException, XmlPullParserException {
         parser.require(XmlPullParser.START_TAG, NS, DESCRIPTION);
-        String description = removeImgLinkFromText(readText(parser));
+        String description = readText(parser);
         parser.require(XmlPullParser.END_TAG, NS, DESCRIPTION);
         return description;
     }

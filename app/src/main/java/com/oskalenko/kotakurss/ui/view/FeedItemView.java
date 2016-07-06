@@ -8,7 +8,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.oskalenko.kotakurss.R;
+import com.oskalenko.kotakurss.data.Injection;
 import com.oskalenko.kotakurss.data.model.Feed;
+import com.oskalenko.kotakurss.manager.ImageManager;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -23,7 +25,6 @@ public class FeedItemView extends BaseItemView<Feed> implements View.OnClickList
 
     private static final String DATE_FORMAT = "EEE, d MMM yyyy";
 
-    private ImageView mFeedImageView;
     private TextView mTitleTextView;
     private TextView mDescriptionTextView;
     private TextView mDateTextView;
@@ -40,7 +41,6 @@ public class FeedItemView extends BaseItemView<Feed> implements View.OnClickList
     protected void bindViews(View view) {
         super.bindViews(view);
 
-        mFeedImageView = (ImageView) view.findViewById(R.id.item_feed_view_feed_image_view);
         mTitleTextView = (TextView) view.findViewById(R.id.item_feed_view_title_text_view);
         mDescriptionTextView = (TextView) view.findViewById(R.id.item_feed_view_description_text_view);
         mDateTextView = (TextView) view.findViewById(R.id.item_feed_view_date_text_view);

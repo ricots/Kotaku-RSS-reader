@@ -1,6 +1,10 @@
 package com.oskalenko.kotakurss.common;
 
 import android.support.annotation.Nullable;
+import android.util.Log;
+
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * Created with IntelliJ IDEA.
@@ -38,5 +42,25 @@ public class Utils {
             throw new NullPointerException(String.valueOf(errorMessage));
         }
         return reference;
+    }
+
+    public static void copyStream(InputStream inputStream, OutputStream outputStream) {
+
+        final int bufferSize = 1024;
+
+        try {
+            byte[] bytes = new byte[bufferSize];
+
+            for(;;) {
+                int count = inputStream.read(bytes, 0, bufferSize);
+
+                if(count == -1)
+                    break;
+
+                outputStream.write(bytes, 0, count);
+            }
+        } catch(Exception ex){
+            Log.e("CopyStream", ex.getMessage());
+        }
     }
 }

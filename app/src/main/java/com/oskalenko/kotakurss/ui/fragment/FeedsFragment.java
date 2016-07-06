@@ -2,7 +2,6 @@ package com.oskalenko.kotakurss.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -12,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.oskalenko.kotakurss.R;
+import com.oskalenko.kotakurss.data.Injection;
 import com.oskalenko.kotakurss.data.model.Feed;
 import com.oskalenko.kotakurss.interfaces.OnClickViewListener;
 import com.oskalenko.kotakurss.manager.ImageManager;
@@ -36,6 +36,7 @@ public class FeedsFragment extends BaseLceFragment<List<Feed>> implements FeedsC
     private Toolbar mToolbar;
 
     private FeedsAdapter mFeedsAdapter;
+    private ImageManager mImageManager;
 
     public FeedsFragment() {
     }
@@ -47,8 +48,8 @@ public class FeedsFragment extends BaseLceFragment<List<Feed>> implements FeedsC
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ImageManager imageManager = new ImageManager();
-        mFeedsAdapter =  new FeedsAdapter(imageManager);
+        mImageManager = Injection.provideImageManager(getActivity());
+        mFeedsAdapter =  new FeedsAdapter(mImageManager);
     }
 
     @Override

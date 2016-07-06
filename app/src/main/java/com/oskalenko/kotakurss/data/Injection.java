@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import com.oskalenko.kotakurss.data.local.FeedsLocalDataSource;
 import com.oskalenko.kotakurss.data.remote.FeedsParser;
 import com.oskalenko.kotakurss.data.remote.FeedsRemoteDataSource;
+import com.oskalenko.kotakurss.manager.ImageManager;
 
 import static com.oskalenko.kotakurss.common.Utils.checkNotNull;
 
@@ -30,5 +31,9 @@ public class Injection {
 
     public static FeedsParser provideFeedsParser() {
         return new FeedsParser();
+    }
+
+    public static ImageManager provideImageManager(Context context) {
+        return new ImageManager(context);
     }
 }

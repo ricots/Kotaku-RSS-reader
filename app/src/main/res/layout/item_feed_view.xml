@@ -16,7 +16,7 @@
         android:layout_margin="@dimen/item_feed_view_card_margin">
 
         <ImageView
-            android:id="@+id/item_feed_view_feed_image_view"
+            android:id="@+id/image_view"
             android:layout_width="@dimen/item_feed_view_feed_image_view_width"
             android:layout_height="@dimen/item_feed_view_feed_image_view_width"
             android:layout_marginEnd="@dimen/item_feed_view_feed_image_view_margin_end"
@@ -24,11 +24,16 @@
             android:scaleType="centerCrop"
             tools:src="@drawable/ic_no_photo"/>
 
+        <include
+            layout="@layout/item_loading_view"
+            android:layout_width="@dimen/item_feed_view_feed_image_view_width"
+            android:layout_height="@dimen/item_feed_view_feed_image_view_width"/>
+
         <TextView
             android:id="@+id/item_feed_view_title_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/item_feed_view_feed_image_view"
+            android:layout_toEndOf="@id/image_view"
             android:layout_marginBottom="@dimen/item_feed_view_title_text_view_margin_bottom"
             android:maxLines="2"
             android:ellipsize="end"
@@ -40,7 +45,7 @@
             android:id="@+id/item_feed_view_description_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/item_feed_view_feed_image_view"
+            android:layout_toEndOf="@id/image_view"
             android:layout_below="@id/item_feed_view_title_text_view"
             android:layout_marginBottom="@dimen/item_feed_view_description_text_view_margin_bottom"
             android:maxLines="4"

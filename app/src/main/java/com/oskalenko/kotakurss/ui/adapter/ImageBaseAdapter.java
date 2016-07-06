@@ -25,35 +25,31 @@ public abstract class ImageBaseAdapter<T1, T2 extends View & ViewModel & ItemCli
     protected abstract String getImageUrl(int position);
 
     public ImageBaseAdapter(ImageManager imageManager) {
-        mImageManager = imageManager;
+       mImageManager = imageManager;
     }
 
     @Override
     public void onBindViewHolder(BaseViewHolder<T2> holder, int position) {
 
         String imageUrl = getImageUrl(position);
-        T2 cardView = holder.getView();
-        ImageView imageView = cardView.getImageView();
-
+        final T2 cardView = holder.getView();
+        final ImageView imageView = cardView.getImageView();
 
         if (imageView != null && !TextUtils.isEmpty(imageUrl)) {
             cardView.showProgress();
 
-            /*            mImageManager
-                    .load(!TextUtils.isEmpty(imageUrl) ? imageUrl : "http://")
-                    .error(getNoPhotoDrawable())
-                    .into(imageView, new Callback() {
-                        @Override
-                        public void onSuccess() {
-                            cardView.hideProgress();
-                        }
+            mImageManager.loadImage(imageUrl, imageView, getNoPhotoDrawable(), new ImageManager.Callback() {
+                @Override
+                public void onSuccess() {
+                    cardView.hideProgress();
+                }
 
-                        @Override
-                        public void onError() {
-                            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                            cardView.hideProgress();
-                        }
-                    });*/
+                @Override
+                public void onError() {
+                    imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                    cardView.hideProgress();
+                }
+            });
         }
 
         super.onBindViewHolder(holder, position);
