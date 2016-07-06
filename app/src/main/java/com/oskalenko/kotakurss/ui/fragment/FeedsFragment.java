@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -32,6 +33,7 @@ import static com.oskalenko.kotakurss.common.Utils.checkNotNull;
 public class FeedsFragment extends BaseLceFragment<List<Feed>> implements FeedsContract.View, OnClickViewListener {
 
     private RecyclerView mFeedsRecyclerView;
+    private Toolbar mToolbar;
 
     private FeedsAdapter mFeedsAdapter;
 
@@ -50,6 +52,12 @@ public class FeedsFragment extends BaseLceFragment<List<Feed>> implements FeedsC
     }
 
     @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getHomeActivity().setToolBar(mToolbar);
+    }
+
+    @Override
     protected void initRecyclerView() {
         mFeedsAdapter.setClickListener(this);
         mFeedsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
@@ -60,6 +68,7 @@ public class FeedsFragment extends BaseLceFragment<List<Feed>> implements FeedsC
     protected void bindViews(View view) {
         super.bindViews(view);
         mFeedsRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_home_feeds_recycler_view);
+        mToolbar = (Toolbar) view.findViewById(R.id.toolbar);
     }
 
     @Override
@@ -70,6 +79,11 @@ public class FeedsFragment extends BaseLceFragment<List<Feed>> implements FeedsC
     @Override
     protected int getLayoutRes() {
         return R.layout.fragment_feeds;
+    }
+
+    @Override
+    protected RecyclerView getRecyclerView() {
+        return mFeedsRecyclerView;
     }
 
     @Override
@@ -90,7 +104,7 @@ public class FeedsFragment extends BaseLceFragment<List<Feed>> implements FeedsC
 
     @Override
     public void showFeeds(List<Feed> feeds) {
-        mFeedsAdapter.setData(feeds);
+        setData(feeds);
     }
 
     @Override
@@ -103,8 +117,12 @@ public class FeedsFragment extends BaseLceFragment<List<Feed>> implements FeedsC
         Feed feed = mFeedsAdapter.getModel(position);
         switch (view.getId()) {
             case R.id.item_feed_view_read_more_text_view:
-                ((HomeActivity) getActivity()).startFeedDescriptionScreen(feed.getLink());
+                getHomeActivity().startFeedDescriptionScreen(feed.getLink());
                 break;
         }
+    }
+
+    private HomeActivity getHomeActivity() {
+        return (HomeActivity) getActivity();
     }
 }

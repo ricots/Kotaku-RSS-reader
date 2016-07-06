@@ -1,11 +1,13 @@
 package com.oskalenko.kotakurss.ui.fragment;
 
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.oskalenko.kotakurss.R;
+import com.oskalenko.kotakurss.ui.activity.HomeActivity;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,6 +20,7 @@ public class FeedDescriptionFragment extends BaseFragment {
     public static final String ARG_CONTENT_LINK = "arg_content_link";
 
     private WebView mDescriptionWebView;
+    private Toolbar mToolbar;
 
     public static FeedDescriptionFragment newInstance(String link) {
         Bundle args = new Bundle();
@@ -33,6 +36,8 @@ public class FeedDescriptionFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        getHomeActivity().setToolBar(mToolbar);
+
         Bundle arguments = getArguments();
         String link = arguments.getString(ARG_CONTENT_LINK);
 
@@ -41,6 +46,7 @@ public class FeedDescriptionFragment extends BaseFragment {
 
     @Override
     protected void bindViews(View view) {
+        mToolbar = (Toolbar) view.findViewById(R.id.toolbar);
         mDescriptionWebView = (WebView) view.findViewById(R.id.fragment_feed_description_web_view);
     }
 
@@ -63,5 +69,9 @@ public class FeedDescriptionFragment extends BaseFragment {
 
         setLoading(true);
         mDescriptionWebView.loadUrl(link);
+    }
+
+    private HomeActivity getHomeActivity() {
+        return (HomeActivity) getActivity();
     }
 }

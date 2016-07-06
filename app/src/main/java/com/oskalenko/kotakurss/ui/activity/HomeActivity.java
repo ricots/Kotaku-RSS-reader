@@ -1,11 +1,12 @@
 package com.oskalenko.kotakurss.ui.activity;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.oskalenko.kotakurss.R;
 import com.oskalenko.kotakurss.common.ActivityUtils;
-import com.oskalenko.kotakurss.data.FeedsRepository;
 import com.oskalenko.kotakurss.data.Injection;
 import com.oskalenko.kotakurss.data.LoaderProvider;
 import com.oskalenko.kotakurss.ui.fragment.FeedDescriptionFragment;
@@ -13,24 +14,44 @@ import com.oskalenko.kotakurss.ui.fragment.FeedsFragment;
 import com.oskalenko.kotakurss.ui.presenter.FeedsPresenter;
 import com.oskalenko.kotakurss.ui.presenter.view.FeedsContract;
 
-public class HomeActivity extends BaseActivity {
+public class HomeActivity extends BaseActivity implements FragmentManager.OnBackStackChangedListener {
 
     private static final String TAG = HomeActivity.class.getName();
 
-    private Toolbar mToolbar;
     private FeedsPresenter mFeedsPresenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        initToolBar();
+        getSupportFragmentManager().addOnBackStackChangedListener(this);
         startFeedsScreen();
     }
 
-    private void initToolBar() {
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
+    @Override
+    public void onBackStackChanged() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(
+                getSupportFragmentManager().getBackStackEntryCount() >= 1);
+    }
+
+    @Override
+    protected int getLayoutRes() {
+        return R.layout.activity_home;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void setToolBar(Toolbar toolbar) {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
     }
 
     private void startFeedsScreen() {
@@ -54,10 +75,5 @@ public class HomeActivity extends BaseActivity {
                 getSupportLoaderManager(),
                 Injection.provideTasksRepository(getApplicationContext()),
                 view);
-    }
-
-    @Override
-    protected int getLayoutRes() {
-        return R.layout.activity_home;
     }
 }
