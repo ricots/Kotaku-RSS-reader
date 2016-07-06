@@ -24,7 +24,7 @@ public interface FeedsContract {
 
     interface Presenter extends BasePresenter {
 
-        void loadFeeds();
+        void loadFeeds(boolean pullToRefresh);
 
         void openFeedDetails(@NonNull Feed feed);
     }

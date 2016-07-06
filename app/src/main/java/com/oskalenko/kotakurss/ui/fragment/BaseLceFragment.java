@@ -82,7 +82,6 @@ public abstract class BaseLceFragment<M extends List> extends BaseFragment
         super.showError(throwable);
 
         hideRefreshing();
-//        hideLoading(); TODO
         showErrorView();
     }
 

@@ -97,7 +97,7 @@ public class Feed {
                 FeedsPersistenceContract.FeedEntry.COLUMN_NAME_DESCRIPTION));
         final String link = cursor.getString(cursor.getColumnIndexOrThrow(
                 FeedsPersistenceContract.FeedEntry.COLUMN_NAME_LINK));
-        final long date = cursor.getInt(cursor.getColumnIndexOrThrow(
+        final long date = cursor.getLong(cursor.getColumnIndexOrThrow(
                 FeedsPersistenceContract.FeedEntry.COLUMN_NAME_DATE));
         final String imageUrl = cursor.getString(cursor.getColumnIndexOrThrow(
                 FeedsPersistenceContract.FeedEntry.COLUMN_NAME_IMAGE_URL));

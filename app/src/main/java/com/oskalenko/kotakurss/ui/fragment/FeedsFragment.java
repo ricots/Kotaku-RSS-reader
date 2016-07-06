@@ -84,7 +84,7 @@ public class FeedsFragment extends BaseLceFragment<List<Feed>>
 
     @Override
     protected void loadData(boolean pullToRefresh) {
-        mPresenter.loadFeeds();
+        mPresenter.loadFeeds(pullToRefresh);
     }
 
     @Override

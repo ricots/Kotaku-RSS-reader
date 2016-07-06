@@ -10,6 +10,7 @@ import com.oskalenko.kotakurss.data.FeedsDataSource;
 import com.oskalenko.kotakurss.data.FeedsRepository;
 import com.oskalenko.kotakurss.data.LoaderProvider;
 import com.oskalenko.kotakurss.data.model.Feed;
+import com.oskalenko.kotakurss.exception.ServerErrorException;
 import com.oskalenko.kotakurss.manager.PrefManager;
 import com.oskalenko.kotakurss.ui.presenter.view.FeedsContract;
 
@@ -57,15 +58,15 @@ public class FeedsPresenter implements FeedsContract.Presenter, FeedsRepository.
 
     @Override
     public void start() {
-        loadFeeds();
+        loadFeeds(false);
     }
 
     /**
      * We will always have fresh data from remote, the Loaders handle the local data
      */
     @Override
-    public void loadFeeds() {
-        mView.setLoading(true);
+    public void loadFeeds(boolean pullToRefresh) {
+        mView.setLoading(!pullToRefresh);
         mFeedsRepository.getFeeds(this);
     }
 
@@ -78,11 +79,7 @@ public class FeedsPresenter implements FeedsContract.Presenter, FeedsRepository.
 
     @Override
     public void onFeedsLoaded(List<Feed> feeds) {
-        if (mLoaderManager.getLoader(TASKS_LOADER) == null) {
-            mLoaderManager.initLoader(TASKS_LOADER, null, this);
-        } else {
-            mLoaderManager.restartLoader(TASKS_LOADER, null, this);
-        }
+        startLoader();
     }
 
     @Override
@@ -92,7 +89,9 @@ public class FeedsPresenter implements FeedsContract.Presenter, FeedsRepository.
 
     @Override
     public void onDataNotAvailable() {
-
+        startLoader();
+        mView.setLoading(false);
+        mView.showError(new ServerErrorException());
     }
 
     @Override
@@ -126,5 +125,13 @@ public class FeedsPresenter implements FeedsContract.Presenter, FeedsRepository.
     @Override
     public void openFeedDetails(@NonNull Feed feed) {
 
+    }
+
+    private void startLoader() {
+        if (mLoaderManager.getLoader(TASKS_LOADER) == null) {
+            mLoaderManager.initLoader(TASKS_LOADER, null, this);
+        } else {
+            mLoaderManager.restartLoader(TASKS_LOADER, null, this);
+        }
     }
 }

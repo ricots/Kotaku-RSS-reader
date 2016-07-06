@@ -20,16 +20,6 @@
             </intent-filter>
         </activity>
 
-        <service
-            android:name=".service.FeedsLoaderService"
-            android:enabled="true"/>
-
-        <receiver android:name=".receiver.BootReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-            </intent-filter>
-        </receiver>
-
         <provider
             android:name=".data.FeedsProvider"
             android:authorities="${packageName}"

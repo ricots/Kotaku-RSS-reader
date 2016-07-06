@@ -45,8 +45,18 @@ public class InformationDialog extends DialogFragment implements DialogInterface
     private static final String ARG_MESSAGE = "arg_message";
     private static final String ARG_DIALOG_TYPE = "arg_dialog_type";
 
+    private static boolean mIsShown;
+
     private DialogType mDialogType;
     private OnDialogResult mOnDialogResult;
+
+    public static boolean isShown() {
+        return mIsShown;
+    }
+
+    public static void setShown(boolean isShown) {
+        InformationDialog.mIsShown = isShown;
+    }
 
     public void setOnDialogResult(OnDialogResult onDialogResult) {
         this.mOnDialogResult = onDialogResult;
@@ -95,6 +105,7 @@ public class InformationDialog extends DialogFragment implements DialogInterface
         if (mOnDialogResult != null) {
             mOnDialogResult.onDialogResult(CANCEL);
         }
+        mIsShown = false;
         super.onDismiss(dialog);
     }
 

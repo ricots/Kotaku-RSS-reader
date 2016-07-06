@@ -3,8 +3,8 @@
     <string name="error_view_text_title">An error has occurred! To repeat, press again</string>
     <string name="list_empty">List is empty</string>
     <string name="read_more">READ MORE</string>
-    <string name="sort_ascending">Sort by new</string>
-    <string name="sort_descending">Sort by old</string>
+    <string name="sort_ascending">Sort by old</string>
+    <string name="sort_descending">Sort by new</string>
     <string name="_dialog_ok">Ok</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="wifi_network_exception_message">No Internet! An application must be the active compound. Make the connection?</string>

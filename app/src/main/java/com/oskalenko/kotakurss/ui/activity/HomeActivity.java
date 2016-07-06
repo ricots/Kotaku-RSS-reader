@@ -100,9 +100,14 @@ public class HomeActivity extends BaseActivity implements FragmentManager.OnBack
 
     @Override
     public void showError(Throwable throwable) {
+        if (InformationDialog.isShown()) {
+            return;
+        }
+
         InformationDialog dialog = setupErrorDialog(throwable);
 
         if (dialog != null) {
+            InformationDialog.setShown(true);
             dialog.show(getSupportFragmentManager(), null);
         }
     }
