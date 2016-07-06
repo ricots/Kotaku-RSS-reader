@@ -13,4 +13,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="ActionTextViewStyle">
+        <item name="android:textSize">@dimen/action_text_view_text_size</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
 </resources>

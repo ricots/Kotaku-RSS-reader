@@ -42,11 +42,9 @@ public abstract class BaseItemView<T> extends RelativeLayout implements ViewMode
         }
     }
 
-    private void bindViews(View view) {
-        if (view != null) {
-            mImageView = ((ImageView) view.findViewById(R.id.image_view));
-            mProgressBar = view.findViewById(R.id.progress_bar);
-        }
+    protected void bindViews(View view) {
+        mImageView = ((ImageView) view.findViewById(R.id.image_view));
+        mProgressBar = view.findViewById(R.id.progress_bar);
     }
 
     @LayoutRes

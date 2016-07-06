@@ -103,7 +103,7 @@ public abstract class BaseLceFragment<M extends List> extends BaseFragment
     protected void initRefreshLayout() {
         if (mContentView != null) {
             mContentView.setOnRefreshListener(this);
-            mContentView.setColorSchemeResources(R.color.colorPrimary, R.color.colorPrimaryDark, R.color.white);
+            mContentView.setColorSchemeResources(R.color.colorPrimary, R.color.colorPrimaryDark, R.color.colorWhite);
         }
     }
 

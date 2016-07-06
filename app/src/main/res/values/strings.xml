@@ -2,4 +2,5 @@
     <string name="app_name">Kotaku RSS reader</string>
     <string name="error_view_text_title">An error has occurred! To repeat, press again</string>
     <string name="list_empty">List is empty</string>
+    <string name="read_more">READ MORE</string>
 </resources>

@@ -29,6 +29,7 @@ public class FeedsParser {
     private static final String TAG = FeedsParser.class.getSimpleName();
     private static final String NS = null;
     private static final String IMAGE_URL_PATTERN = "(?m)(?s)<img\\s+(.*)src\\s*=\\s*\"([^\"]+)\"(.*)";
+    private static final String IMG_LINK_PATTERN = "<img\\s+src\\s*=\\s*([\"'][^\"']+[\"']|[^>]+)>";
     private static final String PUB_DATE_FORMAT = "EEE, d MMM yyyy HH:mm:ss Z";
     private static final String GUID = "guid";
     private static final String TITLE = "title";
@@ -37,9 +38,13 @@ public class FeedsParser {
     private static final String PUB_DATE = "pubDate";
 
     private SimpleDateFormat mSimpleDateFormat;
+    private Pattern mImageUrlPattern;
+    private Pattern mImgLinkUrlPattern;
 
     public FeedsParser() {
         mSimpleDateFormat = new SimpleDateFormat(PUB_DATE_FORMAT);
+        mImageUrlPattern = Pattern.compile(IMAGE_URL_PATTERN, Pattern.CASE_INSENSITIVE);
+        mImgLinkUrlPattern = Pattern.compile(IMG_LINK_PATTERN, Pattern.CASE_INSENSITIVE);
     }
 
     public List<Feed> parse(InputStream in) throws XmlPullParserException, IOException {
@@ -109,14 +114,35 @@ public class FeedsParser {
         return new Feed(guid, title, description, link, pubDate, imageUrl);
     }
 
-    private String getImageUrl(String description) {
-        Pattern pattern = Pattern.compile(IMAGE_URL_PATTERN);
-        Matcher matcher = pattern.matcher(description);
-        String src = null;
-        if (matcher.matches()) {
-            src = matcher.group(2);
+    private String getImageUrl(String text) {
+        if (TextUtils.isEmpty(text)) {
+            return null;
         }
-        return src;
+
+        Matcher matcher = mImageUrlPattern.matcher(text);
+        String result = null;
+
+        if (matcher.matches()) {
+            result = matcher.group(2);
+        }
+
+        return result;
+    }
+
+    private String removeImgLinkFromText(String text) { //TODO fix issue with pattern
+        if (TextUtils.isEmpty(text)) {
+            return null;
+        }
+
+        Matcher matcher = mImgLinkUrlPattern.matcher(text);
+        int i = 0;
+
+        while (matcher.find()) {
+            text = text.replaceAll(matcher.group(i), "").trim();
+            i++;
+        }
+
+        return text;
     }
 
     private String readTitle(XmlPullParser parser) throws IOException, XmlPullParserException {
@@ -135,7 +161,7 @@ public class FeedsParser {
 
     private String readDescription(XmlPullParser parser) throws IOException, XmlPullParserException {
         parser.require(XmlPullParser.START_TAG, NS, DESCRIPTION);
-        String description = readText(parser);
+        String description = removeImgLinkFromText(readText(parser));
         parser.require(XmlPullParser.END_TAG, NS, DESCRIPTION);
         return description;
     }

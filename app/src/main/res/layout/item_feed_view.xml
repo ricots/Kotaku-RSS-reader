@@ -1,6 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/colorWhite"
+    app:cardCornerRadius="@dimen/item_feed_view_card_corner_radius"
+    app:cardElevation="@dimen/item_feed_view_card_elevation"
+    app:cardUseCompatPadding="true">
 
-</RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/item_feed_view_card_margin">
+
+        <ImageView
+            android:id="@+id/item_feed_view_feed_image_view"
+            android:layout_width="@dimen/item_feed_view_feed_image_view_width"
+            android:layout_height="@dimen/item_feed_view_feed_image_view_width"
+            android:layout_marginEnd="@dimen/item_feed_view_feed_image_view_margin_end"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/ic_no_photo"/>
+
+        <TextView
+            android:id="@+id/item_feed_view_title_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/item_feed_view_feed_image_view"
+            android:layout_marginBottom="@dimen/item_feed_view_title_text_view_margin_bottom"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:textSize="@dimen/item_feed_view_title_text_view_text_size"
+            android:textColor="@color/colorTextPrimary"
+            tools:text="The House of Sonic is now very much the House of Strategy."/>
+
+        <TextView
+            android:id="@+id/item_feed_view_description_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/item_feed_view_feed_image_view"
+            android:layout_below="@id/item_feed_view_title_text_view"
+            android:layout_marginBottom="@dimen/item_feed_view_description_text_view_margin_bottom"
+            android:maxLines="4"
+            android:ellipsize="end"
+            android:textSize="@dimen/item_feed_view_description_text_view_text_size"
+            android:textColor="@color/colorTextPrimary"
+            tools:text="The House of Sonic is now very much the House of Strategy. Sega, which already owns Company of Heroes has acquired Amplitude, the French studio"/>
+
+        <TextView
+            android:id="@+id/item_feed_view_date_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/item_feed_view_description_text_view"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="@dimen/item_feed_view_rdate_text_view_margin_bottom"
+            android:textSize="@dimen/item_feed_view_date_text_view_text_size"
+            android:textColor="@color/colorGray"
+            tools:text="5 Jul 2016"/>
+
+        <TextView
+            style="@style/ActionTextViewStyle"
+            android:id="@+id/item_feed_view_read_more_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/item_feed_view_date_text_view"
+            android:text="@string/read_more"/>
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
