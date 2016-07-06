@@ -1,5 +1,8 @@
 package com.oskalenko.kotakurss.common;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -61,6 +64,22 @@ public class Utils {
             }
         } catch(Exception ex){
             Log.e("CopyStream", ex.getMessage());
+        }
+    }
+
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+                context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if ((connectivityManager
+                .getNetworkInfo(ConnectivityManager.TYPE_MOBILE) != null && connectivityManager
+                .getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED)
+                || (connectivityManager
+                .getNetworkInfo(ConnectivityManager.TYPE_WIFI) != null && connectivityManager
+                .getNetworkInfo(ConnectivityManager.TYPE_WIFI)
+                .getState() == NetworkInfo.State.CONNECTED)) {
+            return true;
+        } else {
+            return false;
         }
     }
 }

@@ -5,4 +5,9 @@
     <string name="read_more">Читать дальше</string>
     <string name="sort_ascending">новые</string>
     <string name="sort_descending">старые</string>
+    <string name="_dialog_ok">Ок</string>
+    <string name="dialog_cancel">Отмена</string>
+    <string name="wifi_network_exception_message">Отсутствует Интернет! Для работы приложения необходимо активное соединение. Выполнить подключение?</string>
+    <string name="information_dialog_exception_title">Ошибка</string>
+    <string name="server_error_exception_message">Ошибка на стороне сервера</string>
 </resources>

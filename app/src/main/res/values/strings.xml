@@ -5,4 +5,9 @@
     <string name="read_more">READ MORE</string>
     <string name="sort_ascending">Sort by new</string>
     <string name="sort_descending">Sort by old</string>
+    <string name="_dialog_ok">Ok</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="wifi_network_exception_message">No Internet! An application must be the active compound. Make the connection?</string>
+    <string name="information_dialog_exception_title">Error</string>
+    <string name="server_error_exception_message">The error on the server side</string>
 </resources>
