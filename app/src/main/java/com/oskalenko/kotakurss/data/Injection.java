@@ -34,15 +34,18 @@ public class Injection {
         return new FeedsParser();
     }
 
-    public static ImageManager provideImageManager(Context context) {
+    public static ImageManager provideImageManager(@NonNull Context context) {
+        checkNotNull(context);
         return new ImageManager(context);
     }
 
-    public static PrefManager providePrefManager(Context context) {
+    public static PrefManager providePrefManager(@NonNull Context context) {
+        checkNotNull(context);
         return new PrefManager(context);
     }
 
-    public static LoaderProvider provideLoaderProvider(Context context) {
+    public static LoaderProvider provideLoaderProvider(@NonNull Context context) {
+        checkNotNull(context);
         return new LoaderProvider(context);
     }
 }

@@ -85,10 +85,13 @@ public class Feed {
             cursor.moveToNext();
         }
 
+        cursor.close();
+
         return feeds;
     }
 
     private static Feed fromCursor(Cursor cursor) {
+
         final long feedId = cursor.getLong(cursor.getColumnIndexOrThrow(
                 FeedsPersistenceContract.FeedEntry._ID));
         final String title = cursor.getString(cursor.getColumnIndexOrThrow(
@@ -101,6 +104,7 @@ public class Feed {
                 FeedsPersistenceContract.FeedEntry.COLUMN_NAME_DATE));
         final String imageUrl = cursor.getString(cursor.getColumnIndexOrThrow(
                 FeedsPersistenceContract.FeedEntry.COLUMN_NAME_IMAGE_URL));
+
         return new Feed(feedId, title, description, link, date, imageUrl);
     }
 

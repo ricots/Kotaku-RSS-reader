@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.oskalenko.kotakurss.data.local.FeedsPersistenceContract.FeedEntry;
+
 public class FeedsDbHelper extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 1;
@@ -13,13 +15,13 @@ public class FeedsDbHelper extends SQLiteOpenHelper {
     private static final String INTEGER_TYPE = " INTEGER";
     private static final String COMMA_SEP = ",";
     private static final String SQL_CREATE_ENTRIES =
-            "CREATE TABLE " + FeedsPersistenceContract.FeedEntry.TABLE_NAME + " (" +
-                    FeedsPersistenceContract.FeedEntry._ID + INTEGER_TYPE + " PRIMARY KEY," +
-                    FeedsPersistenceContract.FeedEntry.COLUMN_NAME_TITLE + TEXT_TYPE + COMMA_SEP +
-                    FeedsPersistenceContract.FeedEntry.COLUMN_NAME_DESCRIPTION + TEXT_TYPE + COMMA_SEP +
-                    FeedsPersistenceContract.FeedEntry.COLUMN_NAME_LINK + TEXT_TYPE + COMMA_SEP +
-                    FeedsPersistenceContract.FeedEntry.COLUMN_NAME_DATE + INTEGER_TYPE + COMMA_SEP +
-                    FeedsPersistenceContract.FeedEntry.COLUMN_NAME_IMAGE_URL + TEXT_TYPE +
+            "CREATE TABLE " + FeedEntry.TABLE_NAME + " (" +
+                    FeedEntry._ID + INTEGER_TYPE + " PRIMARY KEY," +
+                    FeedEntry.COLUMN_NAME_TITLE + TEXT_TYPE + COMMA_SEP +
+                    FeedEntry.COLUMN_NAME_DESCRIPTION + TEXT_TYPE + COMMA_SEP +
+                    FeedEntry.COLUMN_NAME_LINK + TEXT_TYPE + COMMA_SEP +
+                    FeedEntry.COLUMN_NAME_DATE + INTEGER_TYPE + COMMA_SEP +
+                    FeedEntry.COLUMN_NAME_IMAGE_URL + TEXT_TYPE +
             " )";
 
     public FeedsDbHelper(Context context) {

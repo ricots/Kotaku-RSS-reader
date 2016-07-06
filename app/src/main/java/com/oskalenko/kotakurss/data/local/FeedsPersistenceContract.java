@@ -14,10 +14,8 @@ public final class FeedsPersistenceContract {
     public static final String CONTENT_AUTHORITY = BuildConfig.APPLICATION_ID;
     public static final String CONTENT_FEEDS_TYPE = "vnd.android.cursor.dir/" + CONTENT_AUTHORITY + "/" + FeedEntry.TABLE_NAME;
     public static final String CONTENT_FEED_TYPE = "vnd.android.cursor.item/" + CONTENT_AUTHORITY + "/" + FeedEntry.TABLE_NAME;
-    public static final String VND_ANDROID_CURSOR_ITEM_VND = "vnd.android.cursor.item/vnd." + CONTENT_AUTHORITY + ".";
     private static final String CONTENT_SCHEME = "content://";
     public static final Uri BASE_CONTENT_URI = Uri.parse(CONTENT_SCHEME + CONTENT_AUTHORITY);
-    private static final String VND_ANDROID_CURSOR_DIR_VND = "vnd.android.cursor.dir/vnd." + CONTENT_AUTHORITY + ".";
     private static final String SEPARATOR = "/";
 
     public FeedsPersistenceContract() {
@@ -58,6 +56,5 @@ public final class FeedsPersistenceContract {
         public static Uri buildFeedsUri() {
             return CONTENT_FEED_URI.buildUpon().build();
         }
-
     }
 }

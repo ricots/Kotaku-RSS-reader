@@ -36,6 +36,8 @@ public class FeedsParser {
     private static final String LINK = "link";
     private static final String DESCRIPTION = "description";
     private static final String PUB_DATE = "pubDate";
+    private static final String RSS = "rss";
+    private static final String ITEM = "item";
 
     private SimpleDateFormat mSimpleDateFormat;
     private Pattern mImageUrlPattern;
@@ -61,7 +63,7 @@ public class FeedsParser {
 
     private List<Feed> readFeed(XmlPullParser parser) throws XmlPullParserException, IOException {
         List<Feed> entries = new ArrayList();
-        parser.require(XmlPullParser.START_TAG, NS, "rss");
+        parser.require(XmlPullParser.START_TAG, NS, RSS);
 
         while (parser.next() != XmlPullParser.END_DOCUMENT) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
@@ -70,7 +72,7 @@ public class FeedsParser {
 
             String name = parser.getName();
             // Starts by looking for the entry tag
-            if (name.equals("item")) {
+            if (name.equals(ITEM)) {
                 entries.add(readEntry(parser));
             }
         }
@@ -79,7 +81,7 @@ public class FeedsParser {
     }
 
     private Feed readEntry(XmlPullParser parser) throws XmlPullParserException, IOException {
-        parser.require(XmlPullParser.START_TAG, NS, "item");
+        parser.require(XmlPullParser.START_TAG, NS, ITEM);
 
         String title = null;
         String description = null;
