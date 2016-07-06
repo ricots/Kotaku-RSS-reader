@@ -3,4 +3,6 @@
     <string name="error_view_text_title">Произошла ошибка! Для повтора нажмите еще раз</string>
     <string name="list_empty">Список пуст</string>
     <string name="read_more">Читать дальше</string>
+    <string name="sort_ascending">новые</string>
+    <string name="sort_descending">старые</string>
 </resources>

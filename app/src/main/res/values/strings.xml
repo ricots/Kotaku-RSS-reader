@@ -3,4 +3,6 @@
     <string name="error_view_text_title">An error has occurred! To repeat, press again</string>
     <string name="list_empty">List is empty</string>
     <string name="read_more">READ MORE</string>
+    <string name="sort_ascending">Sort by new</string>
+    <string name="sort_descending">Sort by old</string>
 </resources>

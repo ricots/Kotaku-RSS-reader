@@ -68,7 +68,7 @@ public class FeedsFragment extends BaseLceFragment<List<Feed>> implements FeedsC
     @Override
     protected void bindViews(View view) {
         super.bindViews(view);
-        mFeedsRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_home_feeds_recycler_view);
+        mFeedsRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_feeds_recycler_view);
         mToolbar = (Toolbar) view.findViewById(R.id.toolbar);
     }
 

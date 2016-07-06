@@ -19,4 +19,6 @@
     <dimen name="item_feed_view_date_text_view_text_size">11sp</dimen>
     <dimen name="item_feed_view_description_text_view_margin_bottom">9dp</dimen>
     <dimen name="item_loading_view_width">38dp</dimen>
+    <dimen name="fragment_feeds_sort_down_radio_button_margin_end">34dp</dimen>
+    <dimen name="fragment_feeds_actions_toolbar_padding_bottom">7dp</dimen>
 </resources>
