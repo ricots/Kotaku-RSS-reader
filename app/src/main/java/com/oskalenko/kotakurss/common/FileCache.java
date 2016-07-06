@@ -4,44 +4,45 @@ import android.content.Context;
 
 import java.io.File;
 
+import static android.os.Environment.*;
+import static android.os.Environment.getExternalStorageState;
+
 public class FileCache {
 
-    private File cacheDir;
+    private File mCacheDir;
 
     public FileCache(Context context) {
 
         //Find the dir at SDCARD to save cached images
 
-        if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
+        if (getExternalStorageState().equals(MEDIA_MOUNTED)) {
             //if SDCARD is mounted (SDCARD is present on device and mounted)
-            cacheDir = new File(android.os.Environment.getExternalStorageDirectory(), "LazyList");
+            mCacheDir = new File(getExternalStorageDirectory(), "LazyList");
         } else {
             // if checking on simulator the create cache dir in your application context
-            cacheDir = context.getCacheDir();
+            mCacheDir = context.getCacheDir();
         }
 
-        if (!cacheDir.exists()) {
+        if (!mCacheDir.exists()) {
             // create cache dir in your application context
-            cacheDir.mkdirs();
+            mCacheDir.mkdirs();
         }
     }
 
     public File getFile(String url) {
         //Identify images by hashcode or encode by URLEncoder.encode.
         String filename = String.valueOf(url.hashCode());
-
-        File f = new File(cacheDir, filename);
-        return f;
-
+        File file = new File(mCacheDir, filename);
+        return file;
     }
 
     public void clear() {
         // list all files inside cache directory
-        File[] files = cacheDir.listFiles();
+        File[] files = mCacheDir.listFiles();
         if (files == null)
             return;
         //delete all cache directory files
-        for (File f : files)
-            f.delete();
+        for (File file : files)
+            file.delete();
     }
 }

@@ -10,36 +10,34 @@ import java.util.Map;
 
 public class MemoryCache {
 
-    private static final String TAG = "MemoryCache";
+    private static final String TAG = MemoryCache.class.getSimpleName();
 
     //Last argument true for LRU ordering
-    private Map<String, Bitmap> cache = Collections.synchronizedMap(
+    private Map<String, Bitmap> mCache = Collections.synchronizedMap(
             new LinkedHashMap<String, Bitmap>(10, 1.5f, true));
 
-    //current allocated size
-    private long size = 0;
+    //current allocated mSize
+    private long mSize = 0;
 
-    //max memory cache folder used to download images in bytes
-    private long limit = 1000000;
+    //max memory mCache folder used to download images in bytes
+    private long mLimit = 1000000L;
 
     public MemoryCache() {
-
-        //use 25% of available heap size
+        //use 25% of available heap mSize
         setLimit(Runtime.getRuntime().maxMemory() / 4);
     }
 
-    public void setLimit(long new_limit) {
-
-        limit = new_limit;
-        Log.i(TAG, "MemoryCache will use up to " + limit / 1024. / 1024. + "MB");
+    public void setLimit(long limit) {
+        mLimit = limit;
+        Log.i(TAG, "MemoryCache will use up to " + mLimit / 1024. / 1024. + "MB");
     }
 
     public Bitmap get(String id) {
         try {
-            if (!cache.containsKey(id))
+            if (!mCache.containsKey(id))
                 return null;
             //NullPointerException sometimes happen here http://code.google.com/p/osmdroid/issues/detail?id=78
-            return cache.get(id);
+            return mCache.get(id);
         } catch (NullPointerException ex) {
             ex.printStackTrace();
             return null;
@@ -48,10 +46,10 @@ public class MemoryCache {
 
     public void put(String id, Bitmap bitmap) {
         try {
-            if (cache.containsKey(id))
-                size -= getSizeInBytes(cache.get(id));
-            cache.put(id, bitmap);
-            size += getSizeInBytes(bitmap);
+            if (mCache.containsKey(id))
+                mSize -= getSizeInBytes(mCache.get(id));
+            mCache.put(id, bitmap);
+            mSize += getSizeInBytes(bitmap);
             checkSize();
         } catch (Throwable th) {
             th.printStackTrace();
@@ -59,34 +57,37 @@ public class MemoryCache {
     }
 
     private void checkSize() {
-        Log.i(TAG, "cache size=" + size + " limit="+ limit +" length=" + cache.size());
-        if (size > limit) {
-            Log.i(TAG, "size > limit " + cache.size());
-            Iterator<Map.Entry<String, Bitmap>> iter = cache.entrySet().iterator();//least recently accessed item will be the first one iterated
-            while (iter.hasNext()) {
-                Map.Entry<String, Bitmap> entry = iter.next();
-                size -= getSizeInBytes(entry.getValue());
-                iter.remove();
-                if (size <= limit)
+        Log.i(TAG, "mCache mSize=" + mSize + " mLimit=" + mLimit + " length=" + mCache.size());
+        if (mSize > mLimit) {
+            Log.i(TAG, "mSize > mLimit " + mCache.size());
+            Iterator<Map.Entry<String, Bitmap>> iterator = mCache.entrySet().iterator();//least recently accessed item will be the first one iterated
+
+            while (iterator.hasNext()) {
+                Map.Entry<String, Bitmap> entry = iterator.next();
+                mSize -= getSizeInBytes(entry.getValue());
+                iterator.remove();
+                if (mSize <= mLimit)
                     break;
             }
-            Log.i(TAG, "Clean cache. New size " + cache.size());
+
+            Log.i(TAG, "Clean mCache. New mSize " + mCache.size());
         }
     }
 
     public void clear() {
         try {
             //NullPointerException sometimes happen here http://code.google.com/p/osmdroid/issues/detail?id=78
-            cache.clear();
-            size = 0;
+            mCache.clear();
+            mSize = 0;
         } catch (NullPointerException ex) {
             ex.printStackTrace();
         }
     }
 
-    long getSizeInBytes(Bitmap bitmap) {
-        if (bitmap == null)
+    private long getSizeInBytes(Bitmap bitmap) {
+        if (bitmap == null) {
             return 0;
+        }
         return bitmap.getRowBytes() * bitmap.getHeight();
     }
 }

@@ -5,10 +5,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.ImageView;
 
-import com.oskalenko.kotakurss.R;
 import com.oskalenko.kotakurss.common.FileCache;
 import com.oskalenko.kotakurss.common.MemoryCache;
 import com.oskalenko.kotakurss.common.Utils;
@@ -28,6 +28,8 @@ import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static com.oskalenko.kotakurss.common.Utils.checkNotNull;
+
 public class ImageManager {
 
     private static final String TAG = ImageManager.class.getSimpleName();
@@ -35,19 +37,27 @@ public class ImageManager {
     private static final int READ_TIMEOUT = 30000;
     private static final int DOWNLOAD_THREADS_COUNT = 5;
 
-    private Map<ImageView, String> mImageViews = Collections.synchronizedMap(new WeakHashMap<ImageView, String>());
+    private Map<ImageView, String> mImageViews;
     private FileCache mFileCache;
-    private MemoryCache mMemoryCache = new MemoryCache();
+    private MemoryCache mMemoryCache;
     private ExecutorService mExecutorService;
-    private Handler mHandler = new Handler();
+    private Handler mHandler;
 
     public ImageManager(Context context) {
+        mImageViews = Collections.synchronizedMap(new WeakHashMap<ImageView, String>());
         mFileCache = new FileCache(context);
+        mMemoryCache = new MemoryCache();
         mExecutorService = Executors.newFixedThreadPool(DOWNLOAD_THREADS_COUNT);
+        mHandler = new Handler();
     }
 
-    public void loadImage(String url, ImageView imageView, @DrawableRes int noPhotoDrawableRes, Callback callback) {
-        //Store image and mUrl in Map
+    public void loadImage(@NonNull String url, @NonNull ImageView imageView,
+                          @DrawableRes int noPhotoDrawableRes, @NonNull Callback callback) {
+        checkNotNull(url);
+        checkNotNull(imageView);
+        checkNotNull(callback);
+
+        //Store image and url in Map
         mImageViews.put(imageView, url);
 
         //Check image is stored in MemoryCache Map or not (see MemoryCache.java)
@@ -60,13 +70,13 @@ public class ImageManager {
             imageView.setImageBitmap(bitmap);
             callback.onSuccess();
         } else {
-            //queue Photo to download from mUrl
-            queuePhoto(url, imageView, callback, noPhotoDrawableRes);
+            //queue image to download from url
+            queueImage(url, imageView, callback, noPhotoDrawableRes);
         }
     }
 
     //Task for the queue
-    private class PhotoToLoad {
+    private class ImageInfo {
 
         private String mUrl;
         private ImageView mImageView;
@@ -89,7 +99,7 @@ public class ImageManager {
             return mNoPhotoDrawableRes;
         }
 
-        public PhotoToLoad(String url, ImageView imageView, Callback callback, @DrawableRes int noPhotoDrawableRes) {
+        public ImageInfo(String url, ImageView imageView, Callback callback, @DrawableRes int noPhotoDrawableRes) {
             mUrl = url;
             mImageView = imageView;
             mCallback = callback;
@@ -97,52 +107,51 @@ public class ImageManager {
         }
     }
 
-    private class PhotosLoader implements Runnable {
+    private class ImageLoader implements Runnable {
 
-        private PhotoToLoad mPhotoToLoad;
+        private ImageInfo mImageInfo;
 
-        public PhotosLoader(PhotoToLoad photoToLoad) {
-            mPhotoToLoad = photoToLoad;
+        public ImageLoader(ImageInfo imageInfo) {
+            mImageInfo = imageInfo;
         }
 
         @Override
         public void run() {
             try {
                 //Check if image already downloaded
-                if (imageViewReused(mPhotoToLoad))
+                if (imageViewReused(mImageInfo))
                     return;
                 // download image from web mUrl
-                Bitmap bitmap = getBitmap(mPhotoToLoad.getUrl());
-
+                Bitmap bitmap = getBitmap(mImageInfo.getUrl());
                 // set image data in Memory Cache
-                mMemoryCache.put(mPhotoToLoad.getUrl(), bitmap);
+                mMemoryCache.put(mImageInfo.getUrl(), bitmap);
 
-                if (imageViewReused(mPhotoToLoad))
+                if (imageViewReused(mImageInfo))
                     return;
 
-                // Get mBitmap to display
-                BitmapDisplayer bd = new BitmapDisplayer(bitmap, mPhotoToLoad);
+                // Get bitmap to display
+                DisplayOnUI displayOnUI = new DisplayOnUI(bitmap, mImageInfo);
 
-                // Causes the Runnable bd (BitmapDisplayer) to be added to the message queue.
+                // Causes the Runnable displayOnUI (BitmapDisplayer) to be added to the message queue.
                 // The runnable will be run on the thread to which this mHandler is attached.
                 // BitmapDisplayer run method will call
-                mHandler.post(bd);
+                mHandler.post(displayOnUI);
 
             } catch (Throwable throwable) {
-                mPhotoToLoad.getCallback().onError();
+                mImageInfo.getCallback().onError();
                 Log.e(TAG, throwable.getMessage());
             }
         }
     }
 
     private Bitmap getBitmap(String url) {
-        File f = mFileCache.getFile(url);
+        File file = mFileCache.getFile(url);
 
         //from SD cache
         //CHECK : if trying to decode file which not exist in cache return null
-        Bitmap b = decodeFile(f);
-        if (b != null)
-            return b;
+        Bitmap bitmapFromFile = decodeFile(file);
+        if (bitmapFromFile != null)
+            return bitmapFromFile;
 
         // Download image file from web
         try {
@@ -156,7 +165,7 @@ public class ImageManager {
 
             // Constructs a new FileOutputStream that writes to file
             // if file not exist then it will create file
-            OutputStream outputStream = new FileOutputStream(f);
+            OutputStream outputStream = new FileOutputStream(file);
 
             // See Utils class CopyStream method
             // It will each pixel from input stream and
@@ -168,7 +177,7 @@ public class ImageManager {
 
             //Now file created and going to resize file with defined height
             // Decodes image and scales it to reduce memory consumption
-            bitmap = decodeFile(f);
+            bitmap = decodeFile(file);
 
             return bitmap;
 
@@ -184,38 +193,41 @@ public class ImageManager {
         }
     }
 
-    private Bitmap decodeFile(File f) {
+    private Bitmap decodeFile(File file) {
 
         try {
             //Decode image size
-            BitmapFactory.Options o = new BitmapFactory.Options();
-            o.inJustDecodeBounds = true;
-            FileInputStream stream = new FileInputStream(f);
-            BitmapFactory.decodeStream(stream, null, o);
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            FileInputStream stream = new FileInputStream(file);
+            BitmapFactory.decodeStream(stream, null, options);
             stream.close();
 
             //Find the correct scale value. It should be the power of 2.
 
             // Set width/height of recreated image
-            final int REQUIRED_SIZE = 85;
+            final int requiredSize = 85;
 
-            int width_tmp = o.outWidth, height_tmp = o.outHeight;
+            int width = options.outWidth;
+            int height = options.outHeight;
             int scale = 1;
+
             while (true) {
-                if (width_tmp / 2 < REQUIRED_SIZE || height_tmp / 2 < REQUIRED_SIZE)
+                if (width / 2 < requiredSize || height / 2 < requiredSize)
                     break;
-                width_tmp /= 2;
-                height_tmp /= 2;
+                width /= 2;
+                height /= 2;
                 scale *= 2;
             }
 
             //decode with current scale values
-            BitmapFactory.Options o2 = new BitmapFactory.Options();
-            o2.inSampleSize = scale;
-            FileInputStream stream2 = new FileInputStream(f);
-            Bitmap bitmap = BitmapFactory.decodeStream(stream2, null, o2);
-            stream2.close();
-            return bitmap;
+            BitmapFactory.Options optionsResult = new BitmapFactory.Options();
+            optionsResult.inSampleSize = scale;
+            FileInputStream inputStreamResult = new FileInputStream(file);
+            Bitmap resultBitmap = BitmapFactory.decodeStream(inputStreamResult, null, optionsResult);
+            inputStreamResult.close();
+
+            return resultBitmap;
 
         } catch (FileNotFoundException e) {
         } catch (IOException e) {
@@ -224,51 +236,49 @@ public class ImageManager {
         return null;
     }
 
-    //Used to display mBitmap in the UI thread
-    private class BitmapDisplayer implements Runnable {
+    //Used to display bitmap in the UI thread
+    private class DisplayOnUI implements Runnable {
 
         private Bitmap mBitmap;
-        private PhotoToLoad mPhotoToLoad;
+        private ImageInfo mImageInfo;
 
-        public BitmapDisplayer(Bitmap bitmap, PhotoToLoad photoToLoad) {
+        public DisplayOnUI(Bitmap bitmap, ImageInfo imageInfo) {
             mBitmap = bitmap;
-            mPhotoToLoad = photoToLoad;
+            mImageInfo = imageInfo;
         }
 
         public void run() {
-            if (imageViewReused(mPhotoToLoad))
+            if (imageViewReused(mImageInfo))
                 return;
 
             // Show mBitmap on UI
             if (mBitmap != null) {
-                mPhotoToLoad.mImageView.setImageBitmap(mBitmap);
-                mPhotoToLoad.getCallback().onSuccess();
+                mImageInfo.mImageView.setImageBitmap(mBitmap);
+                mImageInfo.getCallback().onSuccess();
             } else {
-                mPhotoToLoad.getImageView().setImageResource(mPhotoToLoad.getNoPhotoDrawableRes());
-                mPhotoToLoad.getCallback().onError();
+                mImageInfo.getImageView().setImageResource(mImageInfo.getNoPhotoDrawableRes());
+                mImageInfo.getCallback().onError();
             }
         }
     }
 
-    private boolean imageViewReused(PhotoToLoad photoToLoad) {
-
-        String tag = mImageViews.get(photoToLoad.mImageView);
+    private boolean imageViewReused(ImageInfo imageInfo) {
+        String url = mImageViews.get(imageInfo.mImageView);
         //Check mUrl is already exist in mImageViews MAP
-        if (tag == null || !tag.equals(photoToLoad.mUrl))
+        if (url == null || !url.equals(imageInfo.mUrl))
             return true;
         return false;
     }
 
-    private void queuePhoto(String url, ImageView imageView, Callback callback, @DrawableRes int noPhotoDrawableRes) {
-        Log.i(TAG, "queuePhoto " + url);
-        // Store image and mUrl in PhotoToLoad object
-        PhotoToLoad photoToLoad = new PhotoToLoad(url, imageView, callback, noPhotoDrawableRes);
+    private void queueImage(String url, ImageView imageView, Callback callback, @DrawableRes int noPhotoDrawableRes) {
+        // Store image and mUrl in ImageInfo object
+        ImageInfo imageInfo = new ImageInfo(url, imageView, callback, noPhotoDrawableRes);
 
-        // pass PhotoToLoad object to PhotosLoader runnable class
+        // pass ImageInfo object to PhotosLoader runnable class
         // and submit PhotosLoader runnable to executers to run runnable
         // Submits a PhotosLoader runnable task for execution
 
-        mExecutorService.submit(new PhotosLoader(photoToLoad));
+        mExecutorService.submit(new ImageLoader(imageInfo));
     }
 
     public interface Callback {
