@@ -18,10 +18,16 @@ public class ActivityUtils {
      *
      */
     public static void addFragmentToActivity (@NonNull FragmentManager fragmentManager,
-                                              @NonNull Fragment fragment, int frameId) {
+                                              @NonNull Fragment fragment, int frameId, boolean addToBackStack) {
         checkNotNull(fragmentManager);
         checkNotNull(fragment);
+
         FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        if (addToBackStack) {
+            transaction.addToBackStack(fragment.getClass().getName());
+        }
+
         transaction.add(frameId, fragment);
         transaction.commit();
     }

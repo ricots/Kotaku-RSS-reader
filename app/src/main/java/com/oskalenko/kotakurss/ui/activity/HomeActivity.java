@@ -8,6 +8,7 @@ import com.oskalenko.kotakurss.common.ActivityUtils;
 import com.oskalenko.kotakurss.data.FeedsRepository;
 import com.oskalenko.kotakurss.data.Injection;
 import com.oskalenko.kotakurss.data.LoaderProvider;
+import com.oskalenko.kotakurss.ui.fragment.FeedDescriptionFragment;
 import com.oskalenko.kotakurss.ui.fragment.FeedsFragment;
 import com.oskalenko.kotakurss.ui.presenter.FeedsPresenter;
 import com.oskalenko.kotakurss.ui.presenter.view.FeedsContract;
@@ -29,17 +30,21 @@ public class HomeActivity extends BaseActivity {
 
     private void initToolBar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-//        mToolbar.setTitle(R.string.toolbarTitle);
         setSupportActionBar(mToolbar);
     }
 
     private void startFeedsScreen() {
-        // Create the fragment
         FeedsFragment feedsFragment = FeedsFragment.newInstance();
         ActivityUtils.addFragmentToActivity(
-                getSupportFragmentManager(), feedsFragment, R.id.main_container);
+                getSupportFragmentManager(), feedsFragment, R.id.main_container, false);
 
         initPresenter(feedsFragment);
+    }
+
+    public void startFeedDescriptionScreen(String link) {
+        FeedDescriptionFragment feedDescriptionFragment = FeedDescriptionFragment.newInstance(link);
+        ActivityUtils.addFragmentToActivity(
+                getSupportFragmentManager(), feedDescriptionFragment, R.id.main_container, true);
     }
 
     private void initPresenter(FeedsContract.View view) {

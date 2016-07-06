@@ -2,6 +2,7 @@ package com.oskalenko.kotakurss.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -13,6 +14,7 @@ import com.oskalenko.kotakurss.R;
 import com.oskalenko.kotakurss.data.model.Feed;
 import com.oskalenko.kotakurss.interfaces.OnClickViewListener;
 import com.oskalenko.kotakurss.manager.ImageManager;
+import com.oskalenko.kotakurss.ui.activity.HomeActivity;
 import com.oskalenko.kotakurss.ui.adapter.FeedsAdapter;
 import com.oskalenko.kotakurss.ui.presenter.view.FeedsContract;
 
@@ -100,6 +102,9 @@ public class FeedsFragment extends BaseLceFragment<List<Feed>> implements FeedsC
     public void onClickListener(View view, int position) {
         Feed feed = mFeedsAdapter.getModel(position);
         switch (view.getId()) {
+            case R.id.item_feed_view_read_more_text_view:
+                ((HomeActivity) getActivity()).startFeedDescriptionScreen(feed.getLink());
+                break;
         }
     }
 }
