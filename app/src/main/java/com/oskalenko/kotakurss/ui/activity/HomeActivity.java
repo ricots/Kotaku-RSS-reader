@@ -69,11 +69,10 @@ public class HomeActivity extends BaseActivity implements FragmentManager.OnBack
     }
 
     private void initPresenter(FeedsContract.View view) {
-        LoaderProvider loaderProvider = new LoaderProvider(this);
         mFeedsPresenter = new FeedsPresenter(
-                loaderProvider,
+                Injection.provideLoaderProvider(getApplicationContext()),
                 getSupportLoaderManager(),
                 Injection.provideTasksRepository(getApplicationContext()),
-                view);
+                view, Injection.providePrefManager(getApplicationContext()));
     }
 }

@@ -9,24 +9,25 @@ import android.support.v4.content.Loader;
 import com.oskalenko.kotakurss.data.local.FeedsPersistenceContract;
 
 import static com.oskalenko.kotakurss.common.Utils.checkNotNull;
+import static com.oskalenko.kotakurss.data.local.FeedsPersistenceContract.FeedEntry.COLUMN_NAME_DATE;
 
 public class LoaderProvider {
 
-    @NonNull
     private final Context mContext;
 
     public LoaderProvider(@NonNull Context context) {
         mContext = checkNotNull(context, "context cannot be null");
     }
 
-    public Loader<Cursor> createFeedsLoader() {
+    public Loader<Cursor> createFeedsLoader(String sortOrder) {
         String selection = null;
         String[] selectionArgs = null;
+        String sortOrderArgs = COLUMN_NAME_DATE + " " + sortOrder;
 
         return new CursorLoader(
                 mContext,
                 FeedsPersistenceContract.FeedEntry.buildFeedsUri(),
-                FeedsPersistenceContract.FeedEntry.FEEDS_COLUMNS, selection, selectionArgs, null
+                FeedsPersistenceContract.FeedEntry.FEEDS_COLUMNS, selection, selectionArgs, sortOrderArgs
         );
     }
 

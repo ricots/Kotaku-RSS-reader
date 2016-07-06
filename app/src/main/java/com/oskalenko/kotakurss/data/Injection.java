@@ -7,6 +7,7 @@ import com.oskalenko.kotakurss.data.local.FeedsLocalDataSource;
 import com.oskalenko.kotakurss.data.remote.FeedsParser;
 import com.oskalenko.kotakurss.data.remote.FeedsRemoteDataSource;
 import com.oskalenko.kotakurss.manager.ImageManager;
+import com.oskalenko.kotakurss.manager.PrefManager;
 
 import static com.oskalenko.kotakurss.common.Utils.checkNotNull;
 
@@ -35,5 +36,13 @@ public class Injection {
 
     public static ImageManager provideImageManager(Context context) {
         return new ImageManager(context);
+    }
+
+    public static PrefManager providePrefManager(Context context) {
+        return new PrefManager(context);
+    }
+
+    public static LoaderProvider provideLoaderProvider(Context context) {
+        return new LoaderProvider(context);
     }
 }

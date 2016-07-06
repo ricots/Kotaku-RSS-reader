@@ -51,27 +51,27 @@
                 android:layout_height="match_parent">
 
                 <RadioGroup
+                    android:id="@+id/fragment_feeds_sort_radio_group"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:orientation="horizontal">
 
                     <RadioButton
-                        android:id="@+id/fragment_feeds_sort_down_radio_button"
+                        android:id="@+id/fragment_feeds_sort_ascending_radio_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/sort_ascending"
                         android:layout_marginEnd="@dimen/fragment_feeds_sort_down_radio_button_margin_end"
-                        android:drawableTop="@drawable/selector_sort_down"
-                        android:checked="true"
+                        android:drawableTop="@drawable/selector_sort_ascending"
                         android:button="@null"/>
 
                     <RadioButton
-                        android:id="@+id/fragment_feeds_sort_up_radio_button"
+                        android:id="@+id/fragment_feeds_sort_descending_radio_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/sort_descending"
-                        android:drawableTop="@drawable/selector_sort_up"
+                        android:drawableTop="@drawable/selector_sort_descending"
                         android:button="@null"/>
 
                 </RadioGroup>

@@ -15,6 +15,8 @@ public class FeedsProvider extends ContentProvider {
 
     private static final int FEEDS = 100;
     private static final int FEED = 101;
+    public static final String SORT_ASCENDING = "asc";
+    public static final String SORT_DESCENDING = "desc";
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
     private FeedsDbHelper mFeedsDbHelper;
@@ -174,5 +176,4 @@ public class FeedsProvider extends ContentProvider {
         }
         return rowsUpdated;
     }
-
 }

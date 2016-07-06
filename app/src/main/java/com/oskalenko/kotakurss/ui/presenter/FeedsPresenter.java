@@ -10,6 +10,7 @@ import com.oskalenko.kotakurss.data.FeedsDataSource;
 import com.oskalenko.kotakurss.data.FeedsRepository;
 import com.oskalenko.kotakurss.data.LoaderProvider;
 import com.oskalenko.kotakurss.data.model.Feed;
+import com.oskalenko.kotakurss.manager.PrefManager;
 import com.oskalenko.kotakurss.ui.presenter.view.FeedsContract;
 
 import java.util.List;
@@ -29,23 +30,23 @@ public class FeedsPresenter implements FeedsContract.Presenter, FeedsRepository.
 
     private final FeedsContract.View mView;
 
-    @NonNull
     private final FeedsRepository mFeedsRepository;
-
-    @NonNull
     private final LoaderManager mLoaderManager;
-
-    @NonNull
     private final LoaderProvider mLoaderProvider;
+    private final PrefManager mPrefManager;
 
     public FeedsPresenter(@NonNull LoaderProvider loaderProvider,
                           @NonNull LoaderManager loaderManager,
                           @NonNull FeedsRepository feedsRepository,
-                          @NonNull FeedsContract.View view) {
+                          @NonNull FeedsContract.View view,
+                          @NonNull PrefManager prefManager) {
+
         mLoaderProvider = checkNotNull(loaderProvider, "loaderProvider provider cannot be null");
         mLoaderManager = checkNotNull(loaderManager, "loaderManager provider cannot be null");
         mFeedsRepository = checkNotNull(feedsRepository, "FeedsRepository provider cannot be null");
         mView = checkNotNull(view, "FeedsView cannot be null!");
+        mPrefManager = checkNotNull(prefManager, "PrefManager provider cannot be null");
+
         mView.setPresenter(this);
     }
 
@@ -101,7 +102,7 @@ public class FeedsPresenter implements FeedsContract.Presenter, FeedsRepository.
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return mLoaderProvider.createFeedsLoader();
+        return mLoaderProvider.createFeedsLoader(mPrefManager.getSortOrder());
     }
 
     @Override
