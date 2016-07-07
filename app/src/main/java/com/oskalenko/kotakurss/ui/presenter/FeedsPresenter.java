@@ -105,10 +105,10 @@ public class FeedsPresenter implements FeedsContract.Presenter, FeedsRepository.
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if (data != null) {
-            if (data.moveToLast()) {
-                onDataLoaded(data);
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        if (cursor != null) {
+            if (cursor.moveToLast()) {
+                onDataLoaded(cursor);
             } else {
                 onDataEmpty();
             }

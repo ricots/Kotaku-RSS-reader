@@ -31,7 +31,7 @@ public abstract class ImageBaseAdapter<T1, T2 extends View & ViewModel & ItemCli
     @Override
     public void onBindViewHolder(BaseViewHolder<T2> holder, int position) {
 
-        String imageUrl = getImageUrl(position);
+        final String imageUrl = getImageUrl(position);
         final T2 cardView = holder.getView();
         final ImageView imageView = cardView.getImageView();
 

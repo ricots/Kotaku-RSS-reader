@@ -113,15 +113,14 @@ public class InformationDialog extends DialogFragment implements DialogInterface
     public void onClick(DialogInterface dialog, int which) {
         switch (which) {
             case BUTTON_NEGATIVE:
-                dialog.dismiss();
                 break;
             case BUTTON_POSITIVE:
                 if (mOnDialogResult != null) {
                     mOnDialogResult.onDialogResult(OK);
                 }
-                dialog.dismiss();
                 break;
         }
+        dialog.dismiss();
     }
 
     private void setUpDialog() {

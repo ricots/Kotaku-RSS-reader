@@ -33,9 +33,7 @@ public abstract class BaseFragment extends Fragment {
 
         if (getLayoutRes() == 0) {
             throw new IllegalArgumentException(
-                    "getLayoutRes() returned 0, which is not allowed. "
-                            + "If you don't want to use getLayoutRes() but implement your own view for this "
-                            + "fragment manually, then you have to override onCreateView();");
+                    "getLayoutRes() returned 0, which is not valid resource is.");
         } else {
             return inflater.inflate(getLayoutRes(), container, false);
         }

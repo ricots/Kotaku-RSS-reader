@@ -2,7 +2,6 @@ package com.oskalenko.kotakurss.data.remote;
 
 import android.support.annotation.NonNull;
 
-import com.oskalenko.kotakurss.common.Constants;
 import com.oskalenko.kotakurss.data.FeedsDataSource;
 import com.oskalenko.kotakurss.data.Injection;
 import com.oskalenko.kotakurss.data.model.Feed;

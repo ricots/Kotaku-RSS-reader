@@ -32,11 +32,9 @@ public class BaseViewHolder<T1 extends View> extends RecyclerView.ViewHolder
 
     @Override
     public void setPosition(int position) {
-
     }
 
     @Override
     public void setClickListener(OnClickViewListener clickListener) {
-
     }
 }

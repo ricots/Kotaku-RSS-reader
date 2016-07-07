@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.RadioGroup;
 
 import com.oskalenko.kotakurss.R;
-import com.oskalenko.kotakurss.data.FeedsProvider;
 import com.oskalenko.kotakurss.data.Injection;
 import com.oskalenko.kotakurss.data.model.Feed;
 import com.oskalenko.kotakurss.interfaces.OnClickViewListener;
@@ -101,16 +100,6 @@ public class FeedsFragment extends BaseLceFragment<List<Feed>>
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.sort_item:
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     @Override

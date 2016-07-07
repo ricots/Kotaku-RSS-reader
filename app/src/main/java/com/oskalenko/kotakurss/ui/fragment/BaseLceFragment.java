@@ -95,10 +95,6 @@ public abstract class BaseLceFragment<M extends List> extends BaseFragment
         getAdapter().setData(data);
     }
 
-    private void hideRefreshing() {
-        mContentView.setRefreshing(false);
-    }
-
     protected void initRefreshLayout() {
         if (mContentView != null) {
             mContentView.setOnRefreshListener(this);
@@ -131,5 +127,9 @@ public abstract class BaseLceFragment<M extends List> extends BaseFragment
      **/
     protected void showErrorView() {
         mErrorView.setVisibility(VISIBLE);
+    }
+
+    private void hideRefreshing() {
+        mContentView.setRefreshing(false);
     }
 }

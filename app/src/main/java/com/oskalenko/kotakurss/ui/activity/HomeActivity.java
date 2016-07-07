@@ -6,7 +6,6 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -14,7 +13,6 @@ import com.oskalenko.kotakurss.R;
 import com.oskalenko.kotakurss.common.ActivityUtils;
 import com.oskalenko.kotakurss.common.Utils;
 import com.oskalenko.kotakurss.data.Injection;
-import com.oskalenko.kotakurss.data.LoaderProvider;
 import com.oskalenko.kotakurss.exception.NetworkConnectionException;
 import com.oskalenko.kotakurss.exception.ServerErrorException;
 import com.oskalenko.kotakurss.ui.dialog.InformationDialog;
@@ -25,9 +23,7 @@ import com.oskalenko.kotakurss.ui.fragment.FeedsFragment;
 import com.oskalenko.kotakurss.ui.presenter.FeedsPresenter;
 import com.oskalenko.kotakurss.ui.presenter.view.FeedsContract;
 
-import java.net.UnknownHostException;
-import java.util.List;
-
+import static com.oskalenko.kotakurss.common.Utils.checkNotNull;
 import static com.oskalenko.kotakurss.ui.dialog.InformationDialog.DialogResult.OK;
 import static com.oskalenko.kotakurss.ui.dialog.InformationDialog.DialogType.ONE_BUTTON_MODE;
 import static com.oskalenko.kotakurss.ui.dialog.InformationDialog.DialogType.TWO_BUTTON_MODE;
@@ -42,8 +38,10 @@ public class HomeActivity extends BaseActivity implements FragmentManager.OnBack
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         getSupportFragmentManager().addOnBackStackChangedListener(this);
         startFeedsScreen();
+
         if (!Utils.isNetworkAvailable(getApplicationContext())) {
             showError(new NetworkConnectionException());
         }
@@ -71,7 +69,8 @@ public class HomeActivity extends BaseActivity implements FragmentManager.OnBack
         }
     }
 
-    public void setToolBar(Toolbar toolbar) {
+    public void setToolBar(@NonNull Toolbar toolbar) {
+        checkNotNull(toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
     }
@@ -81,7 +80,7 @@ public class HomeActivity extends BaseActivity implements FragmentManager.OnBack
         ActivityUtils.addFragmentToActivity(
                 getSupportFragmentManager(), feedsFragment, R.id.main_container, false);
 
-        initPresenter(feedsFragment);
+        initFeedsPresenter(feedsFragment);
     }
 
     public void startFeedDescriptionScreen(String link) {
@@ -90,7 +89,7 @@ public class HomeActivity extends BaseActivity implements FragmentManager.OnBack
                 getSupportFragmentManager(), feedDescriptionFragment, R.id.main_container, true);
     }
 
-    private void initPresenter(FeedsContract.View view) {
+    private void initFeedsPresenter(FeedsContract.View view) {
         mFeedsPresenter = new FeedsPresenter(
                 Injection.provideLoaderProvider(getApplicationContext()),
                 getSupportLoaderManager(),

@@ -17,7 +17,6 @@ public class FeedsRepository implements FeedsDataSource {
     private static FeedsRepository INSTANCE = null;
 
     private final FeedsDataSource mFeedsRemoteDataSource;
-
     private final FeedsDataSource mFeedsLocalDataSource;
 
     private FeedsRepository(@NonNull FeedsDataSource feedsRemoteDataSource,
@@ -50,7 +49,7 @@ public class FeedsRepository implements FeedsDataSource {
     }
 
     /**
-     * Gets tasks from cache, local data source (SQLite) or remote data source, whichever is
+     * Gets feeds from cache, local data source (SQLite) or remote data source, whichever is
      * available first.
      * <p/>
      * Note: {@link GetFeedsCallback#onDataNotAvailable()} is fired if all data sources fail to
