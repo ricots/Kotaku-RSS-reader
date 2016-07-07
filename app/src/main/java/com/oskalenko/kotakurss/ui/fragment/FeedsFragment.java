@@ -97,12 +97,6 @@ public class FeedsFragment extends BaseLceFragment<List<Feed>>
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu, menu);
-    }
-
-    @Override
     public void showFeeds(List<Feed> feeds) {
         setData(feeds);
     }
