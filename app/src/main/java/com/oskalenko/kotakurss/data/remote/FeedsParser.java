@@ -15,6 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -44,7 +45,7 @@ public class FeedsParser {
     private Pattern mImgLinkUrlPattern;
 
     public FeedsParser() {
-        mSimpleDateFormat = new SimpleDateFormat(PUB_DATE_FORMAT);
+        mSimpleDateFormat = new SimpleDateFormat(PUB_DATE_FORMAT, Locale.ENGLISH);
         mImageUrlPattern = Pattern.compile(IMAGE_URL_PATTERN);
         mImgLinkUrlPattern = Pattern.compile(IMG_LINK_PATTERN, Pattern.CASE_INSENSITIVE);
     }
