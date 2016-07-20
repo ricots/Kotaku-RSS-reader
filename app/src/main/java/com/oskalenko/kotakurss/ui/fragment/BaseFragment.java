@@ -20,12 +20,14 @@ import com.oskalenko.kotakurss.ui.presenter.view.FeedsContract;
  */
 public abstract class BaseFragment extends Fragment {
 
-    protected FeedsContract.Presenter mPresenter;
-
     protected abstract void bindViews(View view);
 
     @LayoutRes
     protected abstract int getLayoutRes();
+
+    protected FeedsContract.Presenter getPresenter() {
+        return null;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -48,14 +50,14 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (mPresenter != null) {
-            mPresenter.start();
+        if (getPresenter() != null) {
+            getPresenter().start();
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        mPresenter.result(requestCode, resultCode);
+        getPresenter().result(requestCode, resultCode);
     }
 
     public void showError(Throwable throwable) {

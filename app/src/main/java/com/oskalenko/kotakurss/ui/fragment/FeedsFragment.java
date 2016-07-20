@@ -41,6 +41,7 @@ public class FeedsFragment extends BaseLceFragment<List<Feed>>
     private Toolbar mToolbar;
     private RadioGroup mSortRadioGroup;
 
+    private FeedsContract.Presenter mPresenter;
     private FeedsAdapter mFeedsAdapter;
     private ImageManager mImageManager;
     private PrefManager mPrefManager;
@@ -83,12 +84,17 @@ public class FeedsFragment extends BaseLceFragment<List<Feed>>
 
     @Override
     protected void loadData(boolean pullToRefresh) {
-        mPresenter.loadFeeds(pullToRefresh);
+        getPresenter().loadFeeds(pullToRefresh);
     }
 
     @Override
     protected int getLayoutRes() {
         return R.layout.fragment_feeds;
+    }
+
+    @Override
+    protected FeedsContract.Presenter getPresenter() {
+        return mPresenter;
     }
 
     @Override
