@@ -25,7 +25,7 @@ public abstract class BaseFragment extends Fragment {
     @LayoutRes
     protected abstract int getLayoutRes();
 
-    protected FeedsContract.Presenter getPresenter() {
+    protected BasePresenter getPresenter() {
         return null;
     }
 
